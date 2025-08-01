@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Loyalty System - Cashier Interface</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <div id="app">
+        <!-- Header -->
+        <header class="app-header">
+            <div class="header-left">
+                <h1><i class="fas fa-store"></i> Tienda Loyalty System</h1>
+                <span class="subtitle">Cashier Interface</span>
+            </div>
+            <div class="header-right">
+                <div class="connection-status" id="connectionStatus">
+                    <i class="fas fa-circle status-indicator"></i>
+                    <span>Connecting...</span>
+                </div>
+                <div class="current-time" id="currentTime"></div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main-content">
+            <!-- Action Panel -->
+            <section class="action-panel">
+                <h2><i class="fas fa-bolt"></i> Quick Actions</h2>
+                <div class="action-buttons">
+                    <button class="action-btn primary" id="newCustomerBtn">
+                        <i class="fas fa-user-plus"></i>
+                        <span>Register New Customer</span>
+                        <small>Start registration on tablet</small>
+                    </button>
+                    <button class="action-btn secondary" id="scanBarcodeBtn">
+                        <i class="fas fa-barcode"></i>
+                        <span>Scan Customer Barcode</span>
+                        <small>Identify customer for purchase</small>
+                    </button>
+                    <button class="action-btn tertiary" id="resetTabletBtn">
+                        <i class="fas fa-tablet-alt"></i>
+                        <span>Reset Tablet</span>
+                        <small>Return tablet to idle state</small>
+                    </button>
+                </div>
+            </section>
+
+            <!-- Current Customer Panel -->
+            <section class="current-customer-panel" id="currentCustomerPanel" style="display: none;">
+                <h2><i class="fas fa-user"></i> Current Customer</h2>
+                <div class="customer-info" id="customerInfo">
+                    <!-- Customer details will be populated here -->
+                </div>
+            </section>
+
+            <!-- Activity Panels -->
+            <div class="activity-grid">
+                <!-- Recent Purchases -->
+                <section class="activity-panel">
+                    <h2><i class="fas fa-shopping-cart"></i> Recent Purchases</h2>
+                    <div class="activity-list" id="recentPurchases">
+                        <div class="loading">Loading...</div>
+                    </div>
+                </section>
+
+                <!-- Recent Customers -->
+                <section class="activity-panel">
+                    <h2><i class="fas fa-users"></i> Recent Customers</h2>
+                    <div class="activity-list" id="recentCustomers">
+                        <div class="loading">Loading...</div>
+                    </div>
+                </section>
+            </div>
+        </main>
+
+        <!-- Barcode Scanner Modal -->
+        <div class="modal" id="barcodeModal">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h3><i class="fas fa-barcode"></i> Scan Customer Barcode</h3>
+                    <button class="close-btn" id="closeBarcodeModal">&times;</button>
+                </div>
+                <div class="modal-body">
+                    <p>Scan the customer's barcode with your barcode scanner.</p>
+                    <div class="barcode-input-group">
+                        <input type="text" id="barcodeInput" placeholder="Barcode will appear here..." autofocus>
+                        <button id="processBarcodeBtn" class="btn primary">Process</button>
+                    </div>
+                    <div class="barcode-status" id="barcodeStatus"></div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Status Messages -->
+        <div class="status-messages" id="statusMessages">
+            <!-- Status messages will appear here -->
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script src="renderer.js"></script>
+</body>
+</html>

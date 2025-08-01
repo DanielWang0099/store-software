@@ -1,0 +1,588 @@
+/* Tablet Interface Styles - Customer Facing UI */
+
+:root {
+  --primary-color: #2563eb;
+  --primary-hover: #1d4ed8;
+  --secondary-color: #059669;
+  --success-color: #10b981;
+  --error-color: #ef4444;
+  --warning-color: #f59e0b;
+  
+  --bg-primary: #f8fafc;
+  --bg-secondary: #ffffff;
+  --bg-accent: #f1f5f9;
+  
+  --text-primary: #1f2937;
+  --text-secondary: #6b7280;
+  --text-light: #9ca3af;
+  
+  --border-color: #e5e7eb;
+  --border-radius: 12px;
+  --shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
+  --shadow-lg: 0 20px 25px -5px rgba(0, 0, 0, 0.1), 0 10px 10px -5px rgba(0, 0, 0, 0.04);
+}
+
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+  -webkit-tap-highlight-color: transparent;
+}
+
+body {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Roboto', 'Oxygen', sans-serif;
+  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  color: var(--text-primary);
+  line-height: 1.6;
+  min-height: 100vh;
+  overflow: hidden;
+  touch-action: manipulation;
+}
+
+#app {
+  height: 100vh;
+  position: relative;
+  overflow: hidden;
+}
+
+/* Screen Management */
+.screen {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 0;
+  transform: translateY(20px);
+  transition: all 0.4s ease;
+  pointer-events: none;
+}
+
+.screen.active {
+  opacity: 1;
+  transform: translateY(0);
+  pointer-events: all;
+}
+
+/* Idle Screen */
+.idle-content {
+  text-align: center;
+  color: white;
+  max-width: 600px;
+  padding: 2rem;
+}
+
+.logo-container {
+  margin-bottom: 3rem;
+}
+
+.logo-icon {
+  font-size: 4rem;
+  margin-bottom: 1rem;
+  color: white;
+  opacity: 0.9;
+}
+
+.logo-container h1 {
+  font-size: 3rem;
+  font-weight: 300;
+  margin-bottom: 0.5rem;
+}
+
+.animated-character {
+  margin: 3rem 0;
+}
+
+.smiley-face {
+  width: 200px;
+  height: 200px;
+  background: #fff;
+  border-radius: 50%;
+  margin: 0 auto;
+  position: relative;
+  box-shadow: var(--shadow-lg);
+  transition: transform 0.3s ease;
+}
+
+.smiley-face.animated {
+  animation: bounce 2s infinite ease-in-out;
+}
+
+.eyes {
+  display: flex;
+  justify-content: space-between;
+  padding: 60px 40px 0;
+}
+
+.eye {
+  width: 20px;
+  height: 20px;
+  background: var(--text-primary);
+  border-radius: 50%;
+  animation: blink 3s infinite;
+}
+
+.mouth {
+  width: 80px;
+  height: 40px;
+  border: 3px solid var(--text-primary);
+  border-top: none;
+  border-radius: 0 0 80px 80px;
+  margin: 20px auto 0;
+}
+
+.idle-message {
+  font-size: 1.5rem;
+  opacity: 0.9;
+  line-height: 1.8;
+}
+
+/* Registration Form Screen */
+.form-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.form-header {
+  margin-bottom: 2rem;
+}
+
+.form-header i {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.form-header h2 {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  color: var(--text-primary);
+}
+
+.form-header p {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+}
+
+.registration-form {
+  text-align: left;
+}
+
+.form-group {
+  margin-bottom: 1.5rem;
+}
+
+.form-group label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1.1rem;
+}
+
+.form-group input {
+  width: 100%;
+  padding: 1rem;
+  border: 2px solid var(--border-color);
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  transition: border-color 0.2s ease;
+  background: var(--bg-secondary);
+}
+
+.form-group input:focus {
+  outline: none;
+  border-color: var(--primary-color);
+}
+
+.form-actions {
+  display: flex;
+  gap: 1rem;
+  margin-top: 2rem;
+}
+
+.btn {
+  flex: 1;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: var(--border-radius);
+  font-size: 1.1rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  min-height: 60px;
+}
+
+.btn-primary {
+  background: var(--primary-color);
+  color: white;
+}
+
+.btn-primary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-2px);
+}
+
+.btn-secondary {
+  background: var(--bg-accent);
+  color: var(--text-secondary);
+  border: 2px solid var(--border-color);
+}
+
+.btn-secondary:hover {
+  background: var(--border-color);
+}
+
+/* Customer Info Screen */
+.customer-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.customer-header {
+  margin-bottom: 2rem;
+}
+
+.customer-header i {
+  font-size: 3rem;
+  color: var(--success-color);
+  margin-bottom: 1rem;
+}
+
+.customer-header h2 {
+  font-size: 2rem;
+  color: var(--text-primary);
+}
+
+.customer-details {
+  margin-bottom: 2rem;
+  text-align: left;
+}
+
+.detail-item {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.detail-item:last-child {
+  border-bottom: none;
+}
+
+.detail-item label {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.detail-item span {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.processing-message {
+  text-align: center;
+  color: var(--text-secondary);
+}
+
+.processing-message i {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--primary-color);
+}
+
+/* Confirmation Screen */
+.confirmation-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.confirmation-icon {
+  margin-bottom: 2rem;
+}
+
+.confirmation-icon i {
+  font-size: 4rem;
+}
+
+.confirmation-icon.success i {
+  color: var(--success-color);
+}
+
+.confirmation-icon.error i {
+  color: var(--error-color);
+}
+
+.confirmation-message h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.confirmation-message p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+.barcode-display {
+  margin-top: 2rem;
+  padding: 2rem;
+  background: var(--bg-accent);
+  border-radius: var(--border-radius);
+}
+
+.barcode-display img {
+  max-width: 100%;
+  height: auto;
+  margin-bottom: 1rem;
+}
+
+.barcode-display p {
+  font-size: 0.9rem;
+  color: var(--text-secondary);
+}
+
+/* Purchase Complete Screen */
+.purchase-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.purchase-details h2 {
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  color: var(--text-primary);
+}
+
+.purchase-info {
+  margin-bottom: 2rem;
+}
+
+.purchase-detail {
+  display: flex;
+  justify-content: space-between;
+  padding: 1rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.purchase-detail label {
+  font-weight: 600;
+  color: var(--text-secondary);
+}
+
+.purchase-detail .amount {
+  font-size: 1.5rem;
+  font-weight: bold;
+  color: var(--success-color);
+}
+
+.points-display {
+  margin: 2rem 0;
+}
+
+.points-circle {
+  width: 150px;
+  height: 150px;
+  background: linear-gradient(135deg, var(--primary-color), var(--secondary-color));
+  border-radius: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin: 0 auto;
+  color: white;
+  box-shadow: var(--shadow-lg);
+}
+
+.points-circle span {
+  font-size: 2.5rem;
+  font-weight: bold;
+}
+
+.points-circle small {
+  font-size: 0.9rem;
+  opacity: 0.9;
+}
+
+.thank-you-message {
+  font-size: 1.3rem;
+  color: var(--text-secondary);
+  margin-top: 1rem;
+}
+
+/* Error Screen */
+.error-content {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 3rem;
+  max-width: 500px;
+  width: 90%;
+  box-shadow: var(--shadow-lg);
+  text-align: center;
+}
+
+.error-message h2 {
+  font-size: 2rem;
+  margin-bottom: 1rem;
+  color: var(--text-primary);
+}
+
+.error-message p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+/* Loading Overlay */
+.loading-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.5);
+  display: none;
+  align-items: center;
+  justify-content: center;
+  z-index: 1000;
+  backdrop-filter: blur(4px);
+}
+
+.loading-spinner {
+  background: var(--bg-secondary);
+  border-radius: var(--border-radius);
+  padding: 2rem;
+  text-align: center;
+  box-shadow: var(--shadow-lg);
+}
+
+.loading-spinner i {
+  font-size: 3rem;
+  color: var(--primary-color);
+  margin-bottom: 1rem;
+}
+
+.loading-spinner p {
+  font-size: 1.2rem;
+  color: var(--text-secondary);
+}
+
+/* Validation Error */
+.validation-error {
+  background: rgba(239, 68, 68, 0.1);
+  color: var(--error-color);
+  padding: 1rem;
+  border-radius: var(--border-radius);
+  border: 1px solid rgba(239, 68, 68, 0.3);
+  margin-bottom: 1rem;
+  text-align: center;
+}
+
+/* Animations */
+@keyframes bounce {
+  0%, 20%, 50%, 80%, 100% {
+    transform: translateY(0);
+  }
+  40% {
+    transform: translateY(-20px);
+  }
+  60% {
+    transform: translateY(-10px);
+  }
+}
+
+@keyframes blink {
+  0%, 90%, 100% {
+    transform: scaleY(1);
+  }
+  95% {
+    transform: scaleY(0.1);
+  }
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .form-content,
+  .customer-content,
+  .confirmation-content,
+  .purchase-content,
+  .error-content {
+    margin: 1rem;
+    padding: 2rem;
+    width: calc(100% - 2rem);
+  }
+  
+  .idle-content {
+    padding: 1rem;
+  }
+  
+  .logo-container h1 {
+    font-size: 2rem;
+  }
+  
+  .smiley-face {
+    width: 150px;
+    height: 150px;
+  }
+  
+  .eyes {
+    padding: 45px 30px 0;
+  }
+  
+  .mouth {
+    width: 60px;
+    height: 30px;
+  }
+  
+  .form-actions {
+    flex-direction: column;
+  }
+  
+  .points-circle {
+    width: 120px;
+    height: 120px;
+  }
+  
+  .points-circle span {
+    font-size: 2rem;
+  }
+}
+
+/* Touch-friendly improvements */
+@media (pointer: coarse) {
+  .btn {
+    min-height: 60px;
+    font-size: 1.2rem;
+  }
+  
+  .form-group input {
+    min-height: 60px;
+    font-size: 1.2rem;
+  }
+}

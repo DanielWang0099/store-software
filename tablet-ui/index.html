@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Tienda Loyalty - Customer Interface</title>
+    <link rel="stylesheet" href="/static/tablet-styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.7.4/socket.io.js"></script>
+</head>
+<body>
+    <div id="app">
+        <!-- Idle State -->
+        <div id="idleState" class="state-container active">
+            <div class="idle-content">
+                <div class="logo-container">
+                    <div class="animated-logo">
+                        <i class="fas fa-smile-beam"></i>
+                    </div>
+                    <h1>Welcome to Tienda</h1>
+                    <p>Your loyalty rewards await!</p>
+                </div>
+                
+                <div class="idle-animation">
+                    <div class="floating-shapes">
+                        <div class="shape shape-1"></div>
+                        <div class="shape shape-2"></div>
+                        <div class="shape shape-3"></div>
+                        <div class="shape shape-4"></div>
+                    </div>
+                </div>
+                
+                <div class="status-text">
+                    <p>Please wait while our cashier assists you</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Registration State -->
+        <div id="registrationState" class="state-container">
+            <div class="registration-content">
+                <div class="form-header">
+                    <i class="fas fa-user-plus"></i>
+                    <h2>Join Our Loyalty Program</h2>
+                    <p>Sign up to start earning rewards!</p>
+                </div>
+                
+                <form id="registrationForm" class="registration-form">
+                    <div class="form-group">
+                        <label for="customerName">
+                            <i class="fas fa-user"></i>
+                            Full Name
+                        </label>
+                        <input type="text" id="customerName" name="name" required 
+                               placeholder="Enter your full name">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerEmail">
+                            <i class="fas fa-envelope"></i>
+                            Email Address (Optional)
+                        </label>
+                        <input type="email" id="customerEmail" name="email" 
+                               placeholder="your.email@example.com">
+                    </div>
+                    
+                    <div class="form-group">
+                        <label for="customerPhone">
+                            <i class="fas fa-phone"></i>
+                            Phone Number (Optional)
+                        </label>
+                        <input type="tel" id="customerPhone" name="phone" 
+                               placeholder="(555) 123-4567">
+                    </div>
+                    
+                    <div class="form-actions">
+                        <button type="submit" class="btn-primary">
+                            <i class="fas fa-check"></i>
+                            Complete Registration
+                        </button>
+                    </div>
+                </form>
+                
+                <div class="form-footer">
+                    <p>By registering, you'll receive a barcode for future visits</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Confirmation State -->
+        <div id="confirmationState" class="state-container">
+            <div class="confirmation-content">
+                <div class="confirmation-icon">
+                    <i class="fas fa-check-circle"></i>
+                </div>
+                <h2 id="confirmationTitle">Welcome!</h2>
+                <p id="confirmationMessage">Registration completed successfully</p>
+                
+                <div class="customer-card" id="customerCard" style="display: none;">
+                    <div class="card-header">
+                        <h3>Your Loyalty Card</h3>
+                    </div>
+                    <div class="card-body">
+                        <div class="customer-name" id="newCustomerName"></div>
+                        <div class="barcode-container" id="barcodeContainer">
+                            <!-- Barcode will be inserted here -->
+                        </div>
+                        <div class="barcode-number" id="barcodeNumber"></div>
+                    </div>
+                </div>
+                
+                <div class="auto-reset-timer">
+                    <p>Returning to home screen in <span id="countdown">5</span> seconds...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Customer Info State -->
+        <div id="customerInfoState" class="state-container">
+            <div class="customer-info-content">
+                <div class="info-header">
+                    <i class="fas fa-user-check"></i>
+                    <h2>Customer Identified</h2>
+                </div>
+                
+                <div class="customer-display" id="customerDisplay">
+                    <!-- Customer info will be populated here -->
+                </div>
+                
+                <div class="processing-message">
+                    <div class="spinner"></div>
+                    <p>Processing your purchase...</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Purchase Complete State -->
+        <div id="purchaseCompleteState" class="state-container">
+            <div class="purchase-content">
+                <div class="purchase-header">
+                    <i class="fas fa-shopping-bag"></i>
+                    <h2>Purchase Complete!</h2>
+                </div>
+                
+                <div class="purchase-summary" id="purchaseSummary">
+                    <!-- Purchase details will be populated here -->
+                </div>
+                
+                <div class="points-awarded" id="pointsAwarded">
+                    <!-- Points info will be populated here -->
+                </div>
+                
+                <div class="thank-you-message">
+                    <h3>Thank you for shopping with us!</h3>
+                    <p>Your loyalty points have been added to your account</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Error State -->
+        <div id="errorState" class="state-container">
+            <div class="error-content">
+                <div class="error-icon">
+                    <i class="fas fa-exclamation-triangle"></i>
+                </div>
+                <h2>Oops! Something went wrong</h2>
+                <p id="errorMessage">Please ask our cashier for assistance</p>
+                
+                <div class="error-actions">
+                    <button id="retryBtn" class="btn-secondary">
+                        <i class="fas fa-redo"></i>
+                        Try Again
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Connection Status -->
+        <div class="connection-indicator" id="connectionIndicator">
+            <i class="fas fa-wifi"></i>
+        </div>
+    </div>
+
+    <script src="/static/tablet-app.js"></script>
+</body>
+</html>

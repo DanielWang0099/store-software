@@ -1,0 +1,195 @@
+{
+  "folders": [
+    {
+      "name": "🏪 Tienda Loyalty System",
+      "path": "."
+    },
+    {
+      "name": "🐍 Backend (Python)",
+      "path": "./backend"
+    },
+    {
+      "name": "🖥️ Electron App",
+      "path": "./electron-app"
+    },
+    {
+      "name": "📱 Tablet UI",
+      "path": "./tablet-ui"
+    },
+    {
+      "name": "📚 Documentation",
+      "path": "./docs"
+    }
+  ],
+  "settings": {
+    "python.defaultInterpreterPath": "./backend/venv/Scripts/python.exe",
+    "python.terminal.activateEnvironment": true,
+    "files.associations": {
+      "*.md": "markdown"
+    },
+    "files.exclude": {
+      "**/__pycache__": true,
+      "**/*.pyc": true,
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/.env": false
+    },
+    "search.exclude": {
+      "**/node_modules": true,
+      "**/dist": true,
+      "**/__pycache__": true
+    },
+    "editor.formatOnSave": true,
+    "editor.codeActionsOnSave": {
+      "source.organizeImports": "explicit"
+    },
+    "typescript.preferences.includePackageJsonAutoImports": "on",
+    "javascript.preferences.includePackageJsonAutoImports": "on"
+  },
+  "extensions": {
+    "recommendations": [
+      "ms-python.python",
+      "ms-python.black-formatter",
+      "ms-python.isort",
+      "ms-vscode.vscode-typescript-next",
+      "bradlc.vscode-tailwindcss",
+      "esbenp.prettier-vscode",
+      "ms-vscode.vscode-json",
+      "redhat.vscode-yaml",
+      "ms-python.pylint"
+    ]
+  },
+  "tasks": {
+    "version": "2.0.0",
+    "tasks": [
+      {
+        "label": "🏪 Install All Dependencies",
+        "type": "shell",
+        "command": "powershell",
+        "args": ["-ExecutionPolicy", "Bypass", "-File", "./scripts/install-dependencies.ps1"],
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🚀 Start Development Environment",
+        "type": "shell",
+        "command": "node",
+        "args": ["./scripts/start-dev.js"],
+        "group": {
+          "kind": "build",
+          "isDefault": true
+        },
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": true,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🐍 Start Backend Only",
+        "type": "shell",
+        "command": "python",
+        "args": ["-m", "uvicorn", "main:app", "--reload", "--host", "0.0.0.0", "--port", "8000"],
+        "options": {
+          "cwd": "${workspaceFolder}/backend"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🖥️ Start Electron App Only",
+        "type": "shell",
+        "command": "npm",
+        "args": ["run", "dev"],
+        "options": {
+          "cwd": "${workspaceFolder}/electron-app"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "🧪 Test Receipt Parser",
+        "type": "shell",
+        "command": "python",
+        "args": ["-c", "from app.utils.receipt_parser import ReceiptParser; parser = ReceiptParser(); result = parser.parse_receipt('TOTAL: $29.99\\nReceipt #123456\\nThank you!'); print('Parsed:', result)"],
+        "options": {
+          "cwd": "${workspaceFolder}/backend"
+        },
+        "group": "test",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      },
+      {
+        "label": "📦 Build Electron App",
+        "type": "shell",
+        "command": "npm",
+        "args": ["run", "build"],
+        "options": {
+          "cwd": "${workspaceFolder}/electron-app"
+        },
+        "group": "build",
+        "presentation": {
+          "echo": true,
+          "reveal": "always",
+          "focus": false,
+          "panel": "shared"
+        },
+        "problemMatcher": []
+      }
+    ]
+  },
+  "launch": {
+    "version": "0.2.0",
+    "configurations": [
+      {
+        "name": "🐍 Debug Backend",
+        "type": "debugpy",
+        "request": "launch",
+        "program": "${workspaceFolder}/backend/main.py",
+        "console": "integratedTerminal",
+        "cwd": "${workspaceFolder}/backend",
+        "env": {
+          "PYTHONPATH": "${workspaceFolder}/backend"
+        },
+        "args": []
+      },
+      {
+        "name": "🖥️ Debug Electron Main Process",
+        "type": "node",
+        "request": "launch",
+        "cwd": "${workspaceFolder}/electron-app",
+        "runtimeExecutable": "${workspaceFolder}/electron-app/node_modules/.bin/electron",
+        "windows": {
+          "runtimeExecutable": "${workspaceFolder}/electron-app/node_modules/.bin/electron.cmd"
+        },
+        "args": ["."],
+        "outputCapture": "std"
+      }
+    ]
+  }
+}

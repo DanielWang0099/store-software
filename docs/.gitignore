@@ -1,0 +1,33 @@
+# Build outputs
+_build/
+build/
+site/
+
+# Generated documentation
+*.pdf
+*.docx
+*.html
+!*.md
+
+# Temporary files
+*.tmp
+*.temp
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Backup files
+*.bak
+*.backup

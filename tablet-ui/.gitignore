@@ -1,0 +1,43 @@
+# Build outputs
+dist/
+build/
+out/
+
+# Temporary files
+*.tmp
+*.temp
+
+# Editor files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Logs
+*.log
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.production
+
+# Cache files
+.cache/
+.parcel-cache/
+
+# Dependencies (if any JS bundling is added later)
+node_modules/
+
+# Backup files
+*.bak
+*.backup
