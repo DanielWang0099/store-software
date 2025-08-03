@@ -270,7 +270,7 @@ async def process_barcode_purchase(
     """Process a purchase based on customer barcode scan and receipt data"""
     try:
         # Find customer by barcode
-        result = await db.execute(select(Customer).where(Customer.barcode_data == barcode))
+        result = await db.execute(select(Customer).where(Customer.barcode == barcode))
         customer = result.scalar_one_or_none()
         
         if not customer:

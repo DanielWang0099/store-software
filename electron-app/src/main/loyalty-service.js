@@ -19,49 +19,79 @@ class LoyaltyService {
   }
 
   loadSettings() {
-    this.apiBaseUrl = this.store.get('apiBaseUrl', 'http://localhost:8000');
+    this.apiBaseUrl = this.store.get('apiBaseUrl', 'http://127.0.0.1:8000');
   }
 
   async connect() {
-    try {
-      // Test API connection first
-      const response = await axios.get(`${this.apiBaseUrl}/health`);
-      console.log('Backend API connected:', response.data);
+    const maxRetries = 5;
+    const retryDelay = 2000; // 2 seconds
+    
+    for (let attempt = 1; attempt <= maxRetries; attempt++) {
+      try {
+        // Test API connection first
+        const response = await axios.get(`${this.apiBaseUrl}/health`, {
+          timeout: 5000
+        });
+        console.log(`Backend API connected (attempt ${attempt}):`, response.data);
 
-      // Connect WebSocket
-      this.socket = io(`${this.apiBaseUrl}/ws/electron`, {
-        transports: ['websocket'],
-        upgrade: false
-      });
+        // Connect WebSocket
+        this.socket = io(this.apiBaseUrl, {
+          transports: ['websocket'],
+          upgrade: false,
+          timeout: 10000,
+          reconnection: true,
+          reconnectionAttempts: 3,
+          reconnectionDelay: 2000
+        });
 
-      this.socket.on('connect', () => {
-        console.log('WebSocket connected to backend');
-        this.isConnected = true;
-        this.notifyRenderer('connection-status', { connected: true });
-      });
+        this.socket.on('connect', () => {
+          console.log('WebSocket connected to backend');
+          this.isConnected = true;
+          this.notifyRenderer('connection-status', { connected: true });
+          
+          // Identify as electron client
+          this.socket.emit('identify_client', { type: 'electron' });
+        });
 
-      this.socket.on('disconnect', () => {
-        console.log('WebSocket disconnected from backend');
-        this.isConnected = false;
-        this.notifyRenderer('connection-status', { connected: false });
-      });
+        this.socket.on('disconnect', () => {
+          console.log('WebSocket disconnected from backend');
+          this.isConnected = false;
+          this.notifyRenderer('connection-status', { connected: false });
+        });
 
-      // Handle backend messages
-      this.socket.on('message', (data) => {
-        this.handleBackendMessage(data);
-      });
+        // Handle backend messages
+        this.socket.on('message', (data) => {
+          this.handleBackendMessage(data);
+        });
+        
+        this.socket.on('electron_message', (data) => {
+          this.handleBackendMessage(data);
+        });
 
-      this.socket.on('process_customer_registration', (data) => {
-        this.handleCustomerRegistration(data);
-      });
+        this.socket.on('process_customer_registration', (data) => {
+          this.handleCustomerRegistration(data);
+        });
 
-      this.socket.on('process_purchase', (data) => {
-        this.handlePurchaseProcessing(data);
-      });
+        this.socket.on('process_purchase', (data) => {
+          this.handlePurchaseProcessing(data);
+        });
 
-    } catch (error) {
-      console.error('Error connecting to backend:', error.message);
-      this.notifyRenderer('connection-error', { error: error.message });
+        // Connection successful, break out of retry loop
+        break;
+
+      } catch (error) {
+        console.error(`Connection attempt ${attempt} failed:`, error.message);
+        
+        if (attempt === maxRetries) {
+          console.error('All connection attempts failed');
+          this.notifyRenderer('connection-error', { 
+            error: `Failed to connect after ${maxRetries} attempts: ${error.message}` 
+          });
+        } else {
+          console.log(`Retrying in ${retryDelay / 1000} seconds...`);
+          await new Promise(resolve => setTimeout(resolve, retryDelay));
+        }
+      }
     }
   }
 

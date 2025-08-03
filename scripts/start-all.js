@@ -29,7 +29,7 @@ setTimeout(() => {
     console.log(`Electron app exited with code ${code}`);
     process.exit(code);
   });
-}, 3000);
+}, 5000);
 
 backend.on('close', (code) => {
   console.log(`Backend exited with code ${code}`);

@@ -53,8 +53,8 @@ class TabletInterface {
 
   connectWebSocket() {
     try {
-      // Connect to backend WebSocket
-      this.socket = io('/ws/tablet', {
+      // Connect to backend Socket.IO
+      this.socket = io({
         transports: ['websocket'],
         upgrade: false,
         timeout: 20000,
@@ -65,6 +65,9 @@ class TabletInterface {
         console.log('Connected to backend');
         this.isConnected = true;
         this.updateConnectionIndicator(true);
+        
+        // Identify as tablet client
+        this.socket.emit('identify_client', { type: 'tablet' });
       });
 
       this.socket.on('disconnect', () => {
@@ -81,6 +84,10 @@ class TabletInterface {
 
       // Handle backend messages
       this.socket.on('message', (data) => {
+        this.handleBackendMessage(data);
+      });
+      
+      this.socket.on('tablet_message', (data) => {
         this.handleBackendMessage(data);
       });
 

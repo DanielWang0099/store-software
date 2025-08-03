@@ -32,10 +32,11 @@ class CustomerResponse(BaseModel):
     name: str
     email: Optional[str]
     phone: Optional[str]
-    barcode_data: str
-    barcode_image: Optional[str]
+    barcode: Optional[str]
+    total_points: int
+    total_spent: int
     joined_at: Optional[str]
-    updated_at: Optional[str]
+    last_visit: Optional[str]
     notes: Optional[str]
 
 @router.post("/", response_model=CustomerResponse, status_code=status.HTTP_201_CREATED)
@@ -53,11 +54,14 @@ async def create_customer(
             notes=customer_data.notes
         )
         
+        # Generate barcode for new customer
+        customer.generate_barcode()
+        
         db.add(customer)
         await db.commit()
         await db.refresh(customer)
         
-        logger.info(f"Created new customer: {customer.name} ({customer.barcode_data})")
+        logger.info(f"Created new customer: {customer.name} ({customer.barcode})")
         
         return CustomerResponse(**customer.to_dict())
         
@@ -103,7 +107,7 @@ async def get_customer_by_barcode(
 ):
     """Get customer by barcode"""
     try:
-        result = await db.execute(select(Customer).where(Customer.barcode_data == barcode))
+        result = await db.execute(select(Customer).where(Customer.barcode == barcode))
         customer = result.scalar_one_or_none()
         
         if not customer:
@@ -188,7 +192,7 @@ async def update_customer(
         await db.commit()
         await db.refresh(customer)
         
-        logger.info(f"Updated customer: {customer.name} ({customer.barcode_data})")
+        logger.info(f"Updated customer: {customer.name} ({customer.barcode})")
         
         return CustomerResponse(**customer.to_dict())
         
@@ -221,7 +225,7 @@ async def delete_customer(
         await db.delete(customer)
         await db.commit()
         
-        logger.info(f"Deleted customer: {customer.name} ({customer.barcode_data})")
+        logger.info(f"Deleted customer: {customer.name} ({customer.barcode})")
         
     except HTTPException:
         raise

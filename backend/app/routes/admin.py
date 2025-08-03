@@ -124,7 +124,7 @@ async def get_recent_activity(
         # Get recent purchases
         recent_purchases_result = await db.execute(
             select(Purchase)
-            .order_by(Purchase.timestamp.desc())
+            .order_by(Purchase.purchase_date.desc())
             .limit(limit)
         )
         recent_purchases = recent_purchases_result.scalars().all()

@@ -19,6 +19,15 @@ class WebSocketManager:
         self.current_customer_scan: Optional[Dict] = None
         self.tablet_state = "idle"  # idle, registration, confirmation
         
+        # Socket.IO support
+        self.sio_server = None
+        self.tablet_sid = None
+        self.electron_sid = None
+        
+    def set_socketio_server(self, sio_server):
+        """Set the Socket.IO server instance"""
+        self.sio_server = sio_server
+        
     async def connect_tablet(self, websocket: WebSocket):
         """Connect tablet interface"""
         await websocket.accept()
@@ -60,20 +69,36 @@ class WebSocketManager:
         if self.tablet_connection:
             try:
                 await self.tablet_connection.send_json(message)
-                logger.debug(f"Sent to tablet: {message}")
+                logger.debug(f"Sent to tablet via WebSocket: {message}")
             except Exception as e:
-                logger.error(f"Error sending to tablet: {e}")
+                logger.error(f"Error sending to tablet via WebSocket: {e}")
                 self.tablet_connection = None
+        
+        # Also send via Socket.IO if available
+        if self.sio_server and self.tablet_sid:
+            try:
+                await self.sio_server.emit('tablet_message', message, room=self.tablet_sid)
+                logger.debug(f"Sent to tablet via Socket.IO: {message}")
+            except Exception as e:
+                logger.error(f"Error sending to tablet via Socket.IO: {e}")
     
     async def send_to_electron(self, message: Dict[str, Any]):
         """Send message to Electron app"""
         if self.electron_connection:
             try:
                 await self.electron_connection.send_json(message)
-                logger.debug(f"Sent to Electron: {message}")
+                logger.debug(f"Sent to Electron via WebSocket: {message}")
             except Exception as e:
-                logger.error(f"Error sending to Electron: {e}")
+                logger.error(f"Error sending to Electron via WebSocket: {e}")
                 self.electron_connection = None
+        
+        # Also send via Socket.IO if available
+        if self.sio_server and self.electron_sid:
+            try:
+                await self.sio_server.emit('electron_message', message, room=self.electron_sid)
+                logger.debug(f"Sent to Electron via Socket.IO: {message}")
+            except Exception as e:
+                logger.error(f"Error sending to Electron via Socket.IO: {e}")
     
     async def handle_tablet_message(self, data: Dict[str, Any]):
         """Handle message from tablet"""
